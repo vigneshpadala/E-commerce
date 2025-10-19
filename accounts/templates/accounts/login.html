@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            width: 350px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #f7f9ff;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #5a67d8;
+        }
+        p {
+            text-align: center;
+        }
+        a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* ✅ Message styles */
+        .message {
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .error {
+            background-color: #ffe6e6;
+            color: #d8000c;
+            border: 1px solid #d8000c;
+        }
+        .success {
+            background-color: #e6ffed;
+            color: #256029;
+            border: 1px solid #256029;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+
+        <!-- ✅ Only show form error OR messages (not both duplicates) -->
+        {% if form.errors %}
+            <div class="message error">Invalid username or password</div>
+        {% elif messages %}
+            {% for message in messages %}
+                <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <label for="username">Username</label>
+            <input type="text" name="username" required>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p>Don’t have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+    </div>
+</body>
+</html>

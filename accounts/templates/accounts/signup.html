@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+       
+        .helptext {
+        display: none !important;
+        }
+
+
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .signup-container {
+            background: #fff;
+            padding: 40px 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 400px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .signup-container:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form p {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102,126,234,0.4);
+            outline: none;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background: #5a67d8;
+            transform: scale(1.03);
+        }
+
+        p.login-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .signup-container {
+                width: 90%;
+                padding: 30px 25px;
+            }
+        }
+
+        /* Input validation colors */
+        input.error {
+            border-color: #e53e3e;
+        }
+
+        input.success {
+            border-color: #48bb78;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h2>Create Account</h2>
+        <form method="POST" id="signupForm">
+            {% csrf_token %}
+            {% for field in form %}
+    <p>
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+            <span style="color:red;">{{ field.errors|striptags }}</span>
+        {% endif %}
+    </p>
+{% endfor %}
+            <button type="submit">Sign Up</button>
+        </form>
+
+        <p class="login-text">
+            Already have an account? <a href="{% url 'login' %}">Login</a>
+        </p>
+    </div>
+
+    <script>
+        // Simple front-end validation feedback
+        const form = document.getElementById('signupForm');
+        const inputs = form.querySelectorAll('input');
+
+        form.addEventListener('submit', e => {
+            let valid = true;
+            inputs.forEach(input => {
+                if (input.type !== 'hidden' && input.value.trim() === '') {
+                    input.classList.add('error');
+                    valid = false;
+                } else {
+                    input.classList.remove('error');
+                    input.classList.add('success');
+                }
+            });
+            if (!valid) {
+                e.preventDefault();
+                alert('Please fill in all required fields.');
+            }
+        });
+
+        // Remove error border on typing
+        inputs.forEach(input => {
+            input.addEventListener('input', () => {
+                input.classList.remove('error');
+            });
+        });
+    </script>
+</body>
+</html>
+
+
